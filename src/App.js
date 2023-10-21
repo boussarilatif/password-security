@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import "./index.css";
+import { useState,useEffect } from "react"
+import sha256 from "sha256"
+import bcrypt from "bcryptjs"
 
-function App() {
+
+
+export default function App() {
+  const [value,setValue] = useState('')
+  //const [hased,setHashed] = useState('')
+  const [strongPass,setStronPass] = useState('')
+
+
+  function getHash(){
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(value, salt);
+
+    return hash
+  }
+
+  useEffect(()=>{
+    setStronPass(getHash())
+  },[value])
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+        <div>
+
+  <label id="hash">Password </label>
+
+                 <input for="hash" onChange={(event)=>{
+         setValue(event.target.value)
+       }} placeholder="enter password" />
+        
+        </div>
+
+        {
+          value && (
+                <p>
+          <strong>Hased Password:</strong> { sha256(value) }
+       </p>
+          )
+        }
+                {
+          value && (
+                <p>
+          <strong>Bcrypt Password:</strong> { strongPass }
+       </p>
+          )
+        }
     </div>
   );
 }
 
-export default App;
