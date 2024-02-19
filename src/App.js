@@ -1,56 +1,49 @@
 import "./index.css";
-import { useState,useEffect } from "react"
+import { useState } from "react"
 import sha256 from "sha256"
-import bcrypt from "bcryptjs"
-
-
 
 export default function App() {
-  const [value,setValue] = useState('')
-  //const [hased,setHashed] = useState('')
-  const [strongPass,setStronPass] = useState('')
-
-
-  function getHash(){
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(value, salt);
-
-    return hash
-  }
-
-  useEffect(()=>{
-    setStronPass(getHash())
-  },[value])
-
-
+  const [valueA, setValueA] = useState('')
+  const [valueB, setValueB] = useState('')
 
   return (
     <div className="App">
 
-        <div>
+      <div>
 
-  <label id="hash">Password </label>
 
-                 <input for="hash" onChange={(event)=>{
-         setValue(event.target.value)
-       }} placeholder="enter password" />
-        
+        <div className="input-group">
+          <div>
+
+            <label id="hash">Password (A) </label>
+
+            <input for="hash" onChange={(event) => {
+              setValueA(event.target.value)
+            }} placeholder="enter password" />
+
+          </div>
+
+          <div>
+
+            <label id="hash">Password (B) </label>
+
+            <input for="hash" onChange={(event) => {
+              setValueB(event.target.value)
+            }} placeholder="enter password" />
+
+          </div>
         </div>
 
-        {
-          value && (
-                <p>
-          <strong>Hased Password:</strong> { sha256(value) }
-       </p>
-          )
-        }
-                {
-          value && (
-                <p>
-          <strong>Bcrypt Password:</strong> { strongPass }
-       </p>
-          )
-        }
+        <p>
+          <strong>Hased Password (A):</strong> {sha256(valueA)}
+        </p>
+
+        <p>
+          <strong>Hased Password (B):</strong> {sha256(valueB)}
+        </p>
+
+      </div>
+
     </div>
   );
 }

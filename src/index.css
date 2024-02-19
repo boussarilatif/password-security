@@ -32,3 +32,10 @@ p {
     font-size: 16px;
 }
 
+.input-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
