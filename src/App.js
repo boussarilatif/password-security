@@ -1,56 +1,75 @@
 import "./index.css";
-import { useState,useEffect } from "react"
-import sha256 from "sha256"
+import { useState, useEffect } from "react"
 import bcrypt from "bcryptjs"
 
-
-
 export default function App() {
-  const [value,setValue] = useState('')
-  //const [hased,setHashed] = useState('')
-  const [strongPass,setStronPass] = useState('')
+  const [valueA, setValueA] = useState('')
+  const [valueB, setValueB] = useState('')
+  const [strongPassA, setStronPassA] = useState('')
+  const [strongPassB, setStronPassB] = useState('')
 
-
-  function getHash(){
+  function getHash() {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(value, salt);
+    const hash = bcrypt.hashSync(valueA, salt);
 
     return hash
   }
 
-  useEffect(()=>{
-    setStronPass(getHash())
-  },[value])
 
+  useEffect(() => {
+    setStronPassA(getHash())
+  }, [valueA])
 
+    useEffect(() => {
+    setStronPassB(getHash())
+  }, [valueB])
 
   return (
     <div className="App">
 
-        <div>
+      <div>
 
-  <label id="hash">Password </label>
 
-                 <input for="hash" onChange={(event)=>{
-         setValue(event.target.value)
-       }} placeholder="enter password" />
-        
+        <div className="input-group">
+          <div>
+
+            <label id="hash">Password (A) </label>
+
+            <input for="hash" onChange={(event) => {
+              setValueA(event.target.value)
+            }} placeholder="enter password" />
+
+          </div>
+
+          <div>
+
+            <label id="hash">Password (B) </label>
+
+            <input for="hash" onChange={(event) => {
+              setValueB(event.target.value)
+            }} placeholder="enter password" />
+
+          </div>
         </div>
 
         {
-          value && (
-                <p>
-          <strong>Hased Password:</strong> { sha256(value) }
-       </p>
+          valueA && (
+            <p>
+              <strong>Bcrypt Hased Password (A):</strong> {strongPassA}
+            </p>
           )
         }
-                {
-          value && (
-                <p>
-          <strong>Bcrypt Password:</strong> { strongPass }
-       </p>
+
+        {
+          valueB && (
+            <p>
+              <strong>Bcrypt Hased Password (B):</strong> {strongPassB}
+            </p>
           )
         }
+
+      </div>
+
     </div>
   );
 }
